@@ -1,0 +1,11 @@
+#ce-fab{position:fixed;right:18px;bottom:96px;z-index:2147483000;font:14px/1.3 -apple-system,"Segoe UI",Roboto,sans-serif}
+#ce-fab .ce-main{width:42px;height:42px;border-radius:50%;border:0;background:#c96442;color:#fff;font-size:20px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.25);opacity:.85;transition:opacity .15s,transform .15s}
+#ce-fab .ce-main:hover{opacity:1;transform:scale(1.06)}
+#ce-fab .ce-menu{display:none;position:absolute;right:0;bottom:50px;min-width:220px;background:#30302e;color:#ecebe6;border:1px solid #45443f;border-radius:10px;padding:6px;box-shadow:0 8px 28px rgba(0,0,0,.35)}
+#ce-fab.ce-open .ce-menu{display:block}
+#ce-fab .ce-menu button{display:block;width:100%;text-align:left;background:none;border:0;color:inherit;padding:7px 10px;border-radius:6px;cursor:pointer;font:inherit}
+#ce-fab .ce-menu button:hover{background:#45443f}
+#ce-fab .ce-menu hr{border:0;border-top:1px solid #45443f;margin:4px 0}
+#ce-toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;pointer-events:none;z-index:2147483001;background:#30302e;color:#ecebe6;padding:10px 16px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,.3);font:14px -apple-system,"Segoe UI",sans-serif;transition:all .2s;max-width:80vw}
+#ce-toast.ce-show{opacity:1;transform:translate(-50%,0)}
+#ce-toast.ce-ok{border-left:4px solid #5aa469}#ce-toast.ce-error{border-left:4px solid #d9534f}#ce-toast.ce-busy{border-left:4px solid #c96442}

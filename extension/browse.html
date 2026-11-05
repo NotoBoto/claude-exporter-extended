@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Менеджер чатов — Claude Exporter Extended</title>
+  <link rel="stylesheet" href="ui.css">
+  <link rel="stylesheet" href="browse.css">
+</head>
+<body>
+  <header class="top">
+    <img src="icons/icon48.png" alt="" width="28" height="28">
+    <h1>Менеджер чатов</h1>
+    <select id="org" title="Организация"></select>
+    <span class="grow"></span>
+    <span id="stats" class="muted small"></span>
+    <button id="reload" title="Обновить список">⟳</button>
+    <button id="openOptions" title="Настройки">⚙</button>
+  </header>
+
+  <section class="filters">
+    <input id="q" type="search" placeholder="Поиск по названию…  (Ctrl+F)" class="grow">
+    <label class="chk" title="Поиск по тексту сообщений, артефактов и вложений. Требует индексации."><input type="checkbox" id="deep"> по содержимому</label>
+    <button id="indexBtn" title="Загрузить и закешировать содержимое всех чатов для полнотекстового поиска">Индексировать</button>
+    <select id="fModel"><option value="">Все модели</option></select>
+    <select id="fProject"><option value="">Все проекты</option><option value="__none">Без проекта</option></select>
+    <label class="small muted">с <input type="date" id="fFrom"></label>
+    <label class="small muted">по <input type="date" id="fTo"></label>
+    <select id="fState">
+      <option value="">Все</option>
+      <option value="changed">Новые/изменённые с последнего экспорта</option>
+      <option value="never">Никогда не экспортировались</option>
+      <option value="starred">Избранные ★</option>
+    </select>
+    <button id="resetFilters" title="Сбросить фильтры">✕</button>
+  </section>
+
+  <main>
+    <div class="tablewrap">
+      <table id="table">
+        <thead>
+          <tr>
+            <th class="c-chk"><input type="checkbox" id="checkAll" title="Выбрать все видимые"></th>
+            <th data-sort="name">Название</th>
+            <th data-sort="project">Проект</th>
+            <th data-sort="model">Модель</th>
+            <th data-sort="created_at">Создан</th>
+            <th data-sort="updated_at" class="sorted desc">Обновлён</th>
+            <th data-sort="exported">Экспорт</th>
+            <th class="c-act"></th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+      <div id="empty" class="muted" hidden>Ничего не найдено</div>
+    </div>
+    <aside id="preview" hidden>
+      <div class="row prev-head">
+        <strong id="prevTitle" class="grow"></strong>
+        <button id="prevExport" class="primary">⤓ Экспорт</button>
+        <button id="prevClose">✕</button>
+      </div>
+      <iframe id="prevFrame" sandbox="allow-popups" title="Предпросмотр"></iframe>
+    </aside>
+  </main>
+
+  <footer class="bottom">
+    <span id="selInfo" class="muted">Выбрано: 0</span>
+    <select id="format" title="Формат">
+      <option value="markdown">Markdown</option>
+      <option value="html">HTML</option>
+      <option value="text">Текст</option>
+      <option value="json">JSON</option>
+    </select>
+    <label class="chk small"><input type="checkbox" id="extractArtifacts"> артефакты файлами</label>
+    <label class="chk small"><input type="checkbox" id="includeThinking"> thinking</label>
+    <label class="chk small"><input type="checkbox" id="allBranches"> все ветки</label>
+    <label class="chk small"><input type="checkbox" id="downloadImages"> файлы из чатов</label>
+    <label class="chk small"><input type="checkbox" id="includeProjects"> + проекты (инструкции, база знаний)</label>
+    <span class="grow"></span>
+    <button id="exportSelected" class="primary" disabled>Экспорт выбранных</button>
+    <button id="exportFiltered">Экспорт всех показанных</button>
+  </footer>
+
+  <div id="modal" hidden>
+    <div class="card modal-box">
+      <h2 id="mTitle">Экспорт</h2>
+      <div class="progress"><div id="mBar"></div></div>
+      <div id="mText" class="small muted" style="margin:8px 0"></div>
+      <div id="mErrors" class="small" style="color:var(--err);max-height:120px;overflow:auto"></div>
+      <div class="row" style="justify-content:flex-end"><button id="mCancel">Отмена</button></div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+
+  <script src="lib/jszip.min.js"></script>
+  <script src="lib/api.js"></script>
+  <script src="lib/core.js"></script>
+  <script src="lib/exporter.js"></script>
+  <script src="theme.js"></script>
+  <script src="browse.js"></script>
+</body>
+</html>

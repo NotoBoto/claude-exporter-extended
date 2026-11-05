@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Claude Exporter Extended</title>
+  <link rel="stylesheet" href="ui.css">
+  <style>
+    body{width:340px;padding:14px}
+    header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+    header img{width:24px;height:24px}
+    header h1{font-size:15px;margin:0;flex:1}
+    .card{margin-bottom:10px}
+    .actions{display:grid;gap:8px}
+    .actions button{width:100%}
+    select{width:100%}
+  </style>
+</head>
+<body>
+  <header>
+    <img src="icons/icon48.png" alt="">
+    <h1>Claude Exporter Extended</h1>
+    <button id="options" title="Настройки">⚙</button>
+  </header>
+
+  <div class="card">
+    <div id="chatInfo" class="small muted">Определяю текущий чат…</div>
+  </div>
+
+  <div class="card">
+    <label class="small muted" for="format">Формат</label>
+    <select id="format">
+      <option value="markdown">Markdown (.md)</option>
+      <option value="html">HTML — красивый, печать в PDF</option>
+      <option value="text">Обычный текст (.txt)</option>
+      <option value="json">JSON — все данные и ветки</option>
+    </select>
+    <div style="margin-top:8px">
+      <label class="chk"><input type="checkbox" id="includeThinking"> Размышления (thinking)</label>
+      <label class="chk"><input type="checkbox" id="includeArtifactsInline"> Артефакты внутри чата</label>
+      <label class="chk"><input type="checkbox" id="extractArtifacts"> Артефакты отдельными файлами (ZIP)</label>
+      <label class="chk"><input type="checkbox" id="includeTools"> Вызовы инструментов</label>
+      <label class="chk"><input type="checkbox" id="allBranches"> Все ветки диалога</label>
+      <label class="chk"><input type="checkbox" id="downloadImages"> Файлы из чатов (картинки, PDF, песочница)</label>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button id="exportCurrent" class="primary">⤓ Экспортировать текущий чат</button>
+    <button id="copyCurrent">📋 Копировать как Markdown</button>
+    <button id="browse">📚 Менеджер чатов и массовый экспорт</button>
+  </div>
+  <div id="status" class="status" style="margin-top:8px"></div>
+
+  <script src="lib/jszip.min.js"></script>
+  <script src="lib/api.js"></script>
+  <script src="lib/core.js"></script>
+  <script src="lib/exporter.js"></script>
+  <script src="theme.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

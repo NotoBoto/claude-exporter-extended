@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Настройки — Claude Exporter Extended</title>
+  <link rel="stylesheet" href="ui.css">
+  <style>
+    body{padding:24px}
+    .wrap{max-width:760px;margin:0 auto;display:grid;gap:14px}
+    .field{display:grid;grid-template-columns:220px 1fr;gap:10px;align-items:center;margin:6px 0}
+    .field input[type=text]{width:100%}
+    code{background:var(--hover);padding:1px 5px;border-radius:4px}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="row"><img src="icons/icon48.png" width="32" height="32" alt=""><h1 class="grow" style="font-size:20px;margin:0">Claude Exporter Extended — настройки</h1></div>
+
+  <section class="card">
+    <h2>Аккаунт</h2>
+    <div class="field">
+      <label for="orgId">ID организации</label>
+      <div class="row"><input type="text" id="orgId" class="grow" placeholder="определяется автоматически"><button id="detect">Определить</button></div>
+    </div>
+    <div class="small muted">Обычно заполнять не нужно — ID определяется автоматически, если вы вошли в claude.ai.</div>
+  </section>
+
+  <section class="card">
+    <h2>Формат по умолчанию</h2>
+    <div class="field"><label for="format">Формат</label>
+      <select id="format"><option value="markdown">Markdown</option><option value="html">HTML (печать в PDF)</option><option value="text">Текст</option><option value="json">JSON</option></select></div>
+    <div class="field"><label for="branchMode">Ветки диалога</label>
+      <select id="branchMode"><option value="current">Только текущая ветка</option><option value="all">Все ветки (разветвления после правок/перегенераций)</option></select></div>
+    <label class="chk"><input type="checkbox" id="includeMetadata"> Метаданные (даты, модель, ссылка, проект)</label>
+    <label class="chk"><input type="checkbox" id="includeThinking"> Размышления модели (extended thinking)</label>
+    <label class="chk"><input type="checkbox" id="includeTools"> Вызовы инструментов и их результаты (веб-поиск, анализ и т.п.)</label>
+    <label class="chk"><input type="checkbox" id="includeArtifactsInline"> Артефакты внутри текста чата</label>
+    <label class="chk"><input type="checkbox" id="includeAttachments"> Вложения (текст загруженных файлов и вставок)</label>
+  </section>
+
+  <section class="card">
+    <h2>Артефакты, изображения, архив</h2>
+    <label class="chk"><input type="checkbox" id="extractArtifacts"> Сохранять артефакты отдельными файлами</label>
+    <div class="field"><label for="artifactVersions">Версии артефактов</label>
+      <select id="artifactVersions"><option value="latest">Только последняя версия</option><option value="all">Все версии (name.v1, name.v2 …)</option></select></div>
+    <label class="chk"><input type="checkbox" id="downloadImages"> Скачивать файлы из чатов: оригиналы картинок и PDF, файлы песочницы (ваши загрузки и файлы, созданные Claude)</label>
+    <div class="field"><label for="sandboxScope">Файлы песочницы</label>
+      <select id="sandboxScope"><option value="referenced">Только упомянутые в чате (загруженные вами и выданные Claude)</option><option value="all">Вся песочница, включая промежуточные файлы (может быть очень много)</option></select></div>
+    <div class="field"><label for="maxFileMB">Не скачивать файлы больше, МБ</label><input type="number" id="maxFileMB" min="0" max="2000" step="10"></div>
+    <div class="small muted">0 — без ограничения. Пропущенные файлы перечисляются в errors.txt архива.</div>
+    <div class="field"><label for="zipLayout">Структура ZIP</label>
+      <select id="zipLayout"><option value="nested">Папка на каждый чат (чат + artifacts/ + images/)</option><option value="flat">Плоская (Chats/, Artifacts/, Images/)</option></select></div>
+    <label class="chk"><input type="checkbox" id="groupByProject"> Группировать чаты по проектам (Projects/&lt;проект&gt;/…)</label>
+    <label class="chk"><input type="checkbox" id="addIndex"> Добавлять index.html и index.csv с оглавлением архива</label>
+    <div class="field"><label for="filenameTemplate">Шаблон имени файла</label><input type="text" id="filenameTemplate"></div>
+    <div class="small muted">Переменные: <code>{title}</code> <code>{date}</code> (дата создания) <code>{updated}</code> <code>{model}</code> <code>{project}</code> <code>{uuid}</code> <code>{short}</code>. Пример: <code id="example"></code></div>
+  </section>
+
+  <section class="card">
+    <h2>Производительность</h2>
+    <div class="field"><label for="concurrency">Параллельных запросов</label><input type="number" id="concurrency" min="1" max="8"></div>
+    <div class="field"><label for="delayMs">Пауза между запросами, мс</label><input type="number" id="delayMs" min="0" max="5000" step="50"></div>
+    <div class="small muted">При ошибках 429 (слишком много запросов) расширение само повторяет запрос с задержкой. Если ошибок много — уменьшите параллельность.</div>
+  </section>
+
+  <section class="card">
+    <h2>Интерфейс</h2>
+    <label class="chk"><input type="checkbox" id="showFloatingButton"> Плавающая кнопка экспорта на странице чата</label>
+    <div class="field"><label for="theme">Тема</label>
+      <select id="theme"><option value="auto">Как в системе</option><option value="light">Светлая</option><option value="dark">Тёмная</option></select></div>
+    <div class="small muted">Горячие клавиши: <code>Alt+Shift+E</code> — экспорт текущего чата, <code>Alt+Shift+B</code> — менеджер чатов. Изменить: <code>chrome://extensions/shortcuts</code>.</div>
+  </section>
+
+  <section class="card">
+    <h2>Данные расширения</h2>
+    <div class="row">
+      <button id="backup">Резервная копия настроек и истории</button>
+      <label class="btn">Восстановить… <input type="file" id="restore" accept=".json" hidden></label>
+      <button id="clearCache">Очистить кеш поиска</button>
+      <button id="clearHistory" class="danger">Сбросить историю экспорта</button>
+    </div>
+  </section>
+
+  <div id="status" class="status"></div>
+</div>
+<script src="lib/api.js"></script>
+<script src="lib/core.js"></script>
+<script src="lib/exporter.js"></script>
+<script src="theme.js"></script>
+<script src="options.js"></script>
+</body>
+</html>
